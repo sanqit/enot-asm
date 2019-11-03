@@ -1,0 +1,444 @@
+$color-a:#4D8C20;
+$color-b:#22D19D;
+$color-c:#A137ED;
+$color-d:#E81F1F;
+$color-ip: #428BCA;
+$color-sp:#EEA236;
+
+.marker {
+    width: 1.8em;
+    color: #FFF;
+    border-radius: 2px;
+}
+.marker-sp {
+    background: $color-sp;
+}
+.marker-ip {
+    background: $color-ip;
+}
+.marker-ip.marker-sp {
+    background: linear-gradient(to right, 
+        $color-ip 50%,
+        $color-sp 0
+    );
+}
+.marker-d {
+    background: $color-d;
+}
+.marker-d.marker-sp {
+    background: linear-gradient(to right, 
+        $color-d 50%,
+        $color-sp 0
+    );
+}
+.marker-d.marker-ip {
+    background: linear-gradient(to right, 
+        $color-d 50%,
+        $color-ip 0
+    );
+}
+.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-d 33%,
+        $color-ip 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-c {
+    background: $color-c;
+}
+.marker-c.marker-sp {
+    background: linear-gradient(to right, 
+        $color-c 50%,
+        $color-sp 0
+    );
+}
+.marker-c.marker-ip {
+    background: linear-gradient(to right, 
+        $color-c 50%,
+        $color-ip 0
+    );
+}
+.marker-c.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-c 33%,
+        $color-ip 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-c.marker-d {
+    background: linear-gradient(to right, 
+        $color-c 50%,
+        $color-d 0
+    );
+}
+.marker-c.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-c 33%,
+        $color-d 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-c.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-c 33%,
+        $color-d 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-c.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-c 25%,
+        $color-d 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-b {
+    background: $color-b;
+}
+.marker-b.marker-sp {
+    background: linear-gradient(to right, 
+        $color-b 50%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-ip {
+    background: linear-gradient(to right, 
+        $color-b 50%,
+        $color-ip 0
+    );
+}
+.marker-b.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-ip 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-d {
+    background: linear-gradient(to right, 
+        $color-b 50%,
+        $color-d 0
+    );
+}
+.marker-b.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-d 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-d 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-b.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 25%,
+        $color-d 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-c {
+    background: linear-gradient(to right, 
+        $color-b 50%,
+        $color-c 0
+    );
+}
+.marker-b.marker-c.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-c 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-c.marker-ip {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-c 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-b.marker-c.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 25%,
+        $color-c 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-c.marker-d {
+    background: linear-gradient(to right,
+        $color-b 33%,
+        $color-c 33% 66%,
+        $color-d 0
+    );
+}
+.marker-b.marker-c.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-b 25%,
+        $color-c 25% 50%,
+        $color-d 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-b.marker-c.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-b 25%,
+        $color-c 25% 50%,
+        $color-d 50% 75%,
+        $color-ip 0
+    );
+}
+.marker-b.marker-c.marker-d.marker-ip.marker-sp {
+     background: linear-gradient(to right,
+        $color-b 20%,
+        $color-c 20% 40%,
+        $color-d 40% 60%,
+        $color-ip 60% 80%,
+        $color-sp 0
+    );
+}
+.marker-a {
+    background: $color-a;
+}
+.marker-a.marker-sp {
+    background: linear-gradient(to right, 
+        $color-a 50%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-ip {
+    background: linear-gradient(to right, 
+        $color-a 50%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-ip 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-d {
+    background: linear-gradient(to right, 
+        $color-a 50%,
+        $color-d 0
+    );
+}
+.marker-a.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-d 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-d 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-d 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-c {
+    background: linear-gradient(to right, 
+        $color-a 50%,
+        $color-c 0
+    );
+}
+.marker-a.marker-c.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-c 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-c.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-c 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-c.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-c 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-c.marker-d {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-c 33% 66%,
+        $color-d 0
+    );
+}
+.marker-a.marker-c.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-c 25% 50%,
+        $color-d 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-c.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-c 25% 50%,
+        $color-d 50% 75%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-c.marker-d.marker-ip.marker-sp {
+     background: linear-gradient(to right,
+        $color-a 20%,
+        $color-c 20% 40%,
+        $color-d 40% 60%,
+        $color-ip 60% 80%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b {
+    background: linear-gradient(to right, 
+        $color-a 50%,
+        $color-b 0
+    );
+}
+.marker-a.marker-b.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-b 33% 66%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-b 33% 66%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-b.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-ip 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-d {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-b 33% 66%,
+        $color-d 0
+    );
+}
+.marker-a.marker-b.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-d 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-d 50% 75%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-b.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 20%,
+        $color-b 20% 40%,
+        $color-d 40% 60%,
+        $color-ip 60% 80%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-c {
+    background: linear-gradient(to right,
+        $color-a 33%,
+        $color-b 33% 66%,
+        $color-c 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-c 50% 75%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-c 50% 75%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 20%,
+        $color-b 20% 40%,
+        $color-c 40% 60%,
+        $color-ip 60% 80%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-d {
+    background: linear-gradient(to right,
+        $color-a 25%,
+        $color-b 25% 50%,
+        $color-c 50% 75%,
+        $color-d 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-d.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 20%,
+        $color-b 20% 40%,
+        $color-c 40% 60%,
+        $color-d 60% 80%,
+        $color-sp 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-d.marker-ip {
+    background: linear-gradient(to right,
+        $color-a 20%,
+        $color-b 20% 40%,
+        $color-c 40% 60%,
+        $color-d 60% 80%,
+        $color-ip 0
+    );
+}
+.marker-a.marker-b.marker-c.marker-d.marker-ip.marker-sp {
+    background: linear-gradient(to right,
+        $color-a 16.5%,
+        $color-b 16.5% 33%,
+        $color-c 33% 49.5%,
+        $color-d 49.5% 66%,
+        $color-ip 66% 82.5%,
+        $color-sp 0,
+    );
+}

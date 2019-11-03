@@ -4,6 +4,7 @@ import { CPU, Memory } from "../emulator";
 import { assembler } from "../assembler";
 import { flag, numberFilter, selectLine } from ".";
 import "./emulator.scss";
+import "./fonts.scss";
 
 interface IEmulatorProps {}
 interface IEmulatorState {
@@ -39,8 +40,7 @@ class Emulator extends React.Component<IEmulatorProps, IEmulatorState> {
     var cpu = new CPU({ memory: new Memory() });
     this.state = {
       cpu,
-      code: `
-; Simple example
+      code: `; Simple example
 ; Writes Hello World to the output
 
         JMP start
@@ -88,7 +88,7 @@ print:			; print(C:*from, D:*to)
     );
   }
 
-  jumpToLine(index) {
+  jumpToLine(index: number) {
     const { mapping } = this.state;
     this.refs.sourceCode.scrollIntoView();
     const selectedLine = mapping[index];
@@ -114,32 +114,66 @@ print:			; print(C:*from, D:*to)
       return "";
     }
   }
+  private getMemoryInnerCellStyle(index: number) {
+    const { cpu, displayA, displayB, displayC, displayD } = this.state;
+    let colors = "red";
+
+    if (index === cpu.ip) {
+      colors += " marker-ip";
+    }
+    if (index === cpu.sp) {
+      colors += " marker-sp";
+    }
+    if (index === cpu.gpr[0] && displayA) {
+      colors += " marker-a";
+    }
+    if (index === cpu.gpr[1] && displayB) {
+      colors += " marker-b";
+    }
+    if (index === cpu.gpr[2] && displayC) {
+      colors += " marker-c";
+    }
+    if (index === cpu.gpr[3] && displayD) {
+      colors += " marker-d";
+    }
+    return {
+      "--marker-color": `linear-gradient(to right, ${colors})`
+    };
+  }
   getMemoryInnerCellCss(index: number) {
     const { cpu, displayA, displayB, displayC, displayD } = this.state;
+    let css = "";
     if (index === cpu.ip) {
-      return "marker marker-ip";
-    } else if (index === cpu.sp) {
-      return "marker marker-sp";
-    } else if (index === cpu.gpr[0] && displayA) {
-      return "marker marker-a";
-    } else if (index === cpu.gpr[1] && displayB) {
-      return "marker marker-b";
-    } else if (index === cpu.gpr[2] && displayC) {
-      return "marker marker-c";
-    } else if (index === cpu.gpr[3] && displayD) {
-      return "marker marker-d";
-    } else {
-      return "";
+      css += " marker-ip";
     }
+    if (index === cpu.sp) {
+      css += " marker-sp";
+    }
+    if (index === cpu.gpr[0] && displayA) {
+      css += " marker-a";
+    }
+    if (index === cpu.gpr[1] && displayB) {
+      css += " marker-b";
+    }
+    if (index === cpu.gpr[2] && displayC) {
+      css += " marker-c";
+    }
+    if (index === cpu.gpr[3] && displayD) {
+      css += " marker-d";
+    }
+
+    return css.length === 0 ? "" : "marker " + css;
   }
   getChar(value: number) {
-    var text = String.fromCharCode(value);
-
-    if (text.trim() === "") {
-      return "\u00A0\u00A0";
-    } else {
-      return text;
+    if (value > 0) {
+      const char = String.fromCharCode(value);
+      if (/\S/.test(char)) {
+        return char;
+      } else {
+        return "\u00A0\u00A0";
+      }
     }
+    return "\u00A0\u00A0";
   }
   assemble() {
     try {
@@ -170,7 +204,7 @@ print:			; print(C:*from, D:*to)
           {
             error: `${e.line} | ${e.error}`
           },
-          () => selectLine(this.refs.sourceCode, e.line)
+          () => selectLine(this.refs.sourceCode, e.line - 1)
         );
       } else {
         this.setState({ error: e.error });
@@ -216,7 +250,7 @@ print:			; print(C:*from, D:*to)
   run() {
     const { speed } = this.state;
     if (!this.checkPrgrmLoaded()) {
-      this.assemble();
+      //this.assemble();
     }
 
     this.setState({ isRunning: true });
@@ -352,13 +386,15 @@ print:			; print(C:*from, D:*to)
                 <div className="panel-heading">
                   <h4 className="panel-title">Output</h4>
                 </div>
-                <div className="panel-body source-code">
+                <div className="panel-body lcd">
                   {cpu.memory.data.map(
                     (m, index) =>
                       index >= outputStartIndex && (
                         <div
                           key={`output${index}`}
-                          style={{ float: "left" }}
+                          style={{
+                            float: "left"
+                          }}
                           className="output"
                         >
                           <span>{this.getChar(m)}</span>
@@ -373,173 +409,195 @@ print:			; print(C:*from, D:*to)
                 </div>
                 <div className="panel-body">
                   <p className="text-muted">Registers / Flags</p>
-                </div>
-                <table className="table table-condensed table-striped">
-                  <thead>
-                    <tr>
-                      <th style={{ textAlign: "center" }}>A</th>
-                      <th style={{ textAlign: "center" }}>B</th>
-                      <th style={{ textAlign: "center" }}>C</th>
-                      <th style={{ textAlign: "center" }}>D</th>
-                      <th style={{ textAlign: "center" }}>IP</th>
-                      <th style={{ textAlign: "center" }}>SP</th>
-                      <th style={{ textAlign: "center" }}>Z</th>
-                      <th style={{ textAlign: "center" }}>C</th>
-                      <th style={{ textAlign: "center" }}>F</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr style={{ textAlign: "center" }} className="source-code">
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className={displayA ? "marker marker-a" : undefined}
-                        >
-                          <small>{numberFilter(cpu.gpr[0], displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className={displayB ? "marker marker-b" : undefined}
-                        >
-                          <small>{numberFilter(cpu.gpr[1], displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className={displayC ? "marker marker-c" : undefined}
-                        >
-                          <small>{numberFilter(cpu.gpr[2], displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className={displayD ? "marker marker-d" : undefined}
-                        >
-                          <small>{numberFilter(cpu.gpr[3], displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className="marker marker-ip"
-                        >
-                          <small>{numberFilter(cpu.ip, displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div
-                          style={{ margin: "auto" }}
-                          className="marker marker-sp"
-                        >
-                          <small>{numberFilter(cpu.sp, displayHex)}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <small>{flag(cpu.zero)}</small>
-                      </td>
-                      <td>
-                        <small>{flag(cpu.carry)}</small>
-                      </td>
-                      <td>
-                        <small>{flag(cpu.fault)}</small>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p className="text-muted">RAM</p>
-                <div style={{ width: "29em" }} className="source-code">
-                  {cpu.memory.data.map((m, index) => (
-                    <div
-                      key={`ram${index}`}
-                      className={`memory-block ${this.getMemoryCellCss(index)}`}
-                    >
-                      <div className={this.getMemoryInnerCellCss(index)}>
-                        {this.isInstruction(index) ? (
-                          <a onClick={() => this.jumpToLine(index)}>
+
+                  <table className="table table-condensed table-striped">
+                    <thead>
+                      <tr>
+                        <th style={{ textAlign: "center" }}>A</th>
+                        <th style={{ textAlign: "center" }}>B</th>
+                        <th style={{ textAlign: "center" }}>C</th>
+                        <th style={{ textAlign: "center" }}>D</th>
+                        <th style={{ textAlign: "center" }}>IP</th>
+                        <th style={{ textAlign: "center" }}>SP</th>
+                        <th style={{ textAlign: "center" }}>Z</th>
+                        <th style={{ textAlign: "center" }}>C</th>
+                        <th style={{ textAlign: "center" }}>F</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style={{ textAlign: "center" }}
+                        className="source-code"
+                      >
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className={displayA ? "marker marker-a" : undefined}
+                          >
+                            <small>
+                              {numberFilter(cpu.gpr[0], displayHex)}
+                            </small>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className={displayB ? "marker marker-b" : undefined}
+                          >
+                            <small>
+                              {numberFilter(cpu.gpr[1], displayHex)}
+                            </small>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className={displayC ? "marker marker-c" : undefined}
+                          >
+                            <small>
+                              {numberFilter(cpu.gpr[2], displayHex)}
+                            </small>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className={displayD ? "marker marker-d" : undefined}
+                          >
+                            <small>
+                              {numberFilter(cpu.gpr[3], displayHex)}
+                            </small>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className="marker marker-ip"
+                          >
+                            <small>{numberFilter(cpu.ip, displayHex)}</small>
+                          </div>
+                        </td>
+                        <td>
+                          <div
+                            style={{ margin: "auto" }}
+                            className="marker marker-sp"
+                          >
+                            <small>{numberFilter(cpu.sp, displayHex)}</small>
+                          </div>
+                        </td>
+                        <td>
+                          <small>{flag(cpu.zero)}</small>
+                        </td>
+                        <td>
+                          <small>{flag(cpu.carry)}</small>
+                        </td>
+                        <td>
+                          <small>{flag(cpu.fault)}</small>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p className="text-muted">RAM</p>
+                  <div style={{ width: "29em" }} className="source-code">
+                    {cpu.memory.data.map((m, index) => (
+                      <div
+                        key={`ram${index}`}
+                        className={`memory-block ${this.getMemoryCellCss(
+                          index
+                        )}`}
+                      >
+                        <div className={this.getMemoryInnerCellCss(index)}>
+                          {this.isInstruction(index) ? (
+                            <a onClick={() => this.jumpToLine(index)}>
+                              <small>{numberFilter(m, displayHex)}</small>
+                            </a>
+                          ) : (
                             <small>{numberFilter(m, displayHex)}</small>
-                          </a>
-                        ) : (
-                          <small>{numberFilter(m, displayHex)}</small>
-                        )}
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  <p style={{ marginTop: 5 }}>
+                    <small>
+                      <span>Clock speed:</span>
+                      <select
+                        defaultValue={speed}
+                        onChange={e =>
+                          this.setState({ speed: parseInt(e.target.value) })
+                        }
+                      >
+                        {speeds.map(x => (
+                          <option key={x.speed} value={x.speed}>
+                            {x.desc}
+                          </option>
+                        ))}
+                      </select>
+                      <span style={{ marginLeft: 5 }}>Instructions:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayInstr: !state.displayInstr
+                          }))
+                        }
+                      >
+                        {displayInstr ? "Hide" : "Show"}
+                      </a>
+                      <span style={{ marginLeft: 5 }}>View:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayHex: !state.displayHex
+                          }))
+                        }
+                      >
+                        {displayHex ? "Decimal" : "Hex"}
+                      </a>
+                      <br />
+                      Register addressing:
+                      <span style={{ marginLeft: 5 }}>A:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayA: !state.displayA
+                          }))
+                        }
+                      >
+                        {displayA ? "Hide" : "Show"}
+                      </a>
+                      <span style={{ marginLeft: 5 }}>B:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayB: !state.displayB
+                          }))
+                        }
+                      >
+                        {displayB ? "Hide" : "Show"}
+                      </a>
+                      <span style={{ marginLeft: 5 }}>C:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayC: !state.displayC
+                          }))
+                        }
+                      >
+                        {displayC ? "Hide" : "Show"}
+                      </a>
+                      <span style={{ marginLeft: 5 }}>D:</span>
+                      <a
+                        onClick={() =>
+                          this.setState(state => ({
+                            displayD: !state.displayD
+                          }))
+                        }
+                      >
+                        {displayD ? "Hide" : "Show"}
+                      </a>
+                    </small>
+                  </p>
                 </div>
-                <p style={{ marginTop: 5 }}>
-                  <small>
-                    <span>Clock speed:</span>
-                    <select
-                      defaultValue={speed}
-                      onChange={e =>
-                        this.setState({ speed: parseInt(e.target.value) })
-                      }
-                    >
-                      {speeds.map(x => (
-                        <option key={x.speed} value={x.speed}>
-                          {x.desc}
-                        </option>
-                      ))}
-                    </select>
-                    <span style={{ marginLeft: 5 }}>Instructions:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({
-                          displayInstr: !state.displayInstr
-                        }))
-                      }
-                    >
-                      {displayInstr ? "Hide" : "Show"}
-                    </a>
-                    <span style={{ marginLeft: 5 }}>View:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({
-                          displayHex: !state.displayHex
-                        }))
-                      }
-                    >
-                      {displayHex ? "Decimal" : "Hex"}
-                    </a>
-                    <br />
-                    Register addressing:
-                    <span style={{ marginLeft: 5 }}>A:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({ displayA: !state.displayA }))
-                      }
-                    >
-                      {displayA ? "Hide" : "Show"}
-                    </a>
-                    <span style={{ marginLeft: 5 }}>B:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({ displayB: !state.displayB }))
-                      }
-                    >
-                      {displayB ? "Hide" : "Show"}
-                    </a>
-                    <span style={{ marginLeft: 5 }}>C:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({ displayC: !state.displayC }))
-                      }
-                    >
-                      {displayC ? "Hide" : "Show"}
-                    </a>
-                    <span style={{ marginLeft: 5 }}>D:</span>
-                    <a
-                      onClick={() =>
-                        this.setState(state => ({ displayD: !state.displayD }))
-                      }
-                    >
-                      {displayD ? "Hide" : "Show"}
-                    </a>
-                  </small>
-                </p>
               </div>
 
               <div className="panel panel-default">

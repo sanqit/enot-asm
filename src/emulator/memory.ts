@@ -8,7 +8,7 @@ class Memory {
 
   load(address: number) {
     if (address < 0 || address >= this.data.length) {
-      throw "Memory access violation at " + address;
+      throw new Error(`Memory access violation at ${address}`);
     }
 
     this.lastAccess = address;
@@ -16,7 +16,7 @@ class Memory {
   }
   store(address: number, value: number) {
     if (address < 0 || address >= this.data.length) {
-      throw "Memory access violation at " + address;
+      throw new Error(`Memory access violation at ${address}`);
     }
 
     this.lastAccess = address;
